@@ -14,6 +14,7 @@ import de.domisum.lib.iternifex.navmesh.components.NavMeshTriangle;
 import de.domisum.lib.iternifex.navmesh.components.edges.NavMeshEdgeLadder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
-class NavMeshEditor
+public class NavMeshEditor
 {
 
 	// CONSTANTS
@@ -43,9 +44,11 @@ class NavMeshEditor
 
 	// SETTINGS
 	// editor
+	@Setter
 	private boolean snapPointsToBlockCorner = true;
 
 	// display
+	@Setter
 	private boolean showTriangleConnections = false;
 
 	// EDIT STATUS
@@ -55,6 +58,16 @@ class NavMeshEditor
 
 
 	// GETTERS
+	public boolean getSnapPointsToBlockCorner()
+	{
+		return snapPointsToBlockCorner;
+	}
+
+	public boolean getShowTriangleConnections()
+	{
+		return showTriangleConnections;
+	}
+
 	private NavMesh getNavMesh()
 	{
 		Vector3D location = convertLocationToVector(player.getLocation());
@@ -162,7 +175,7 @@ class NavMeshEditor
 				spawnPointParticles(point);
 
 		Set<LineSegment3D> triangleLines = new HashSet<>();
-		Set<LineSegment3D> triangleConnections = new HashSet<>();
+		Set<LineSegment3D> triangleConnectionLines = new HashSet<>();
 		Set<LineSegment3D> ladderLines = new HashSet<>();
 
 		for(NavMeshTriangle triangle : navMesh.getTriangles())
@@ -174,32 +187,44 @@ class NavMeshEditor
 			triangleLines.add(new LineSegment3D(triangle.getPointB(), triangle.getPointC()));
 			triangleLines.add(new LineSegment3D(triangle.getPointC(), triangle.getPointA()));
 
-			for(NavMeshEdge edge : triangle.getEdges())
-			{
-				NavMeshTriangle neighbor = edge.getOther(triangle);
-
-				if(showTriangleConnections)
-					triangleConnections.add(new LineSegment3D(triangle.getCenter(), neighbor.getCenter()));
-
-				if(edge instanceof NavMeshEdgeLadder)
-				{
-					NavMeshEdgeLadder ladder = (NavMeshEdgeLadder) edge;
-					Vector3D cornerPoint = new Vector3D(
-							ladder.getBottomLadderLocation().getX(),
-							ladder.getTopLadderLocation().getY(),
-							ladder.getBottomLadderLocation().getZ()
-					);
-
-					ladderLines.add(new LineSegment3D(ladder.getBottomLadderLocation(), cornerPoint));
-					ladderLines.add(new LineSegment3D(cornerPoint, ladder.getTopLadderLocation()));
-				}
-			}
+			addLinesOfTriangleEdges(triangleConnectionLines, ladderLines, triangle);
 		}
 
+		spawnParticles(triangleLines, triangleConnectionLines, ladderLines);
+	}
+
+	private void addLinesOfTriangleEdges(
+			Set<LineSegment3D> triangleConnectionLines, Set<LineSegment3D> ladderLines, NavMeshTriangle triangle)
+	{
+		for(NavMeshEdge edge : triangle.getEdges())
+		{
+			NavMeshTriangle neighbor = edge.getOther(triangle);
+
+			if(showTriangleConnections)
+				triangleConnectionLines.add(new LineSegment3D(triangle.getCenter(), neighbor.getCenter()));
+
+			if(edge instanceof NavMeshEdgeLadder)
+			{
+				NavMeshEdgeLadder ladder = (NavMeshEdgeLadder) edge;
+				Vector3D cornerPoint = new Vector3D(
+						ladder.getBottomLadderLocation().getX(),
+						ladder.getTopLadderLocation().getY(),
+						ladder.getBottomLadderLocation().getZ()
+				);
+
+				ladderLines.add(new LineSegment3D(ladder.getBottomLadderLocation(), cornerPoint));
+				ladderLines.add(new LineSegment3D(cornerPoint, ladder.getTopLadderLocation()));
+			}
+		}
+	}
+
+	private void spawnParticles(
+			Set<LineSegment3D> triangleLines, Set<LineSegment3D> triangleConnectionLines, Set<LineSegment3D> ladderLines)
+	{
 		for(LineSegment3D line : triangleLines)
 			spawnLineParticles(line, ParticleEffect.FLAME, LINE_PARTICLE_DISTANCE);
 
-		for(LineSegment3D line : triangleConnections)
+		for(LineSegment3D line : triangleConnectionLines)
 			spawnLineParticles(line, ParticleEffect.DRAGON_BREATH, LINE_PARTICLE_DISTANCE*1.3);
 
 		for(LineSegment3D line : ladderLines)
@@ -235,34 +260,6 @@ class NavMeshEditor
 		// make sure end is displayed properly even with big distance between points
 		Location location = convertVectorToLocation(lineSegment.getB(), player.getWorld()).add(0, 0.5, 0);
 		effect.display(0, 0, 0, 0, 1, location, player);
-	}
-
-
-	// COMMAND
-	void executeCommand(String[] args)
-	{
-		if(args.length == 1)
-		{
-			if(args[0].equalsIgnoreCase("snap"))
-			{
-				snapPointsToBlockCorner = !snapPointsToBlockCorner;
-				player.sendMessage("Snap to block center: "+snapPointsToBlockCorner);
-				return;
-			}
-			if(args[0].equalsIgnoreCase("con"))
-			{
-				showTriangleConnections = !showTriangleConnections;
-				player.sendMessage("Show triangle connections: "+showTriangleConnections);
-				return;
-			}
-		}
-
-		String argsRecombined = "";
-		for(String arg : args)
-			argsRecombined += arg+" ";
-		argsRecombined = argsRecombined.trim();
-
-		player.sendMessage("The arguments '"+argsRecombined+"' are invalid.");
 	}
 
 

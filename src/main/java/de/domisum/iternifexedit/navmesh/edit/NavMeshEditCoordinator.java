@@ -1,5 +1,6 @@
 package de.domisum.iternifexedit.navmesh.edit;
 
+import de.domisum.lib.auxilium.util.StringUtil;
 import de.domisum.lib.auxiliumspigot.util.ItemStackBuilder;
 import de.domisum.lib.auxiliumspigot.util.player.PlayerUtil;
 import de.domisum.lib.iternifex.navmesh.NavMeshRegistry;
@@ -202,7 +203,25 @@ public class NavMeshEditCoordinator
 		if(!isActiveFor(player))
 			startEditMode(player);
 
-		getEditor(player).executeCommand(args);
+		if(args.length == 1)
+		{
+			NavMeshEditor editor = getEditor(player);
+			if("snap".equalsIgnoreCase(args[0]))
+			{
+				editor.setSnapPointsToBlockCorner(!editor.getSnapPointsToBlockCorner());
+				player.sendMessage("Snap to block center: "+editor.getSnapPointsToBlockCorner());
+				return;
+			}
+			if("con".equalsIgnoreCase(args[0]))
+			{
+				editor.setShowTriangleConnections(!editor.getShowTriangleConnections());
+				player.sendMessage("Show triangle connections: "+editor.getShowTriangleConnections());
+				return;
+			}
+		}
+
+		String argsRecombined = StringUtil.concat(" ", args);
+		player.sendMessage("The arguments '"+argsRecombined+"' are invalid.");
 	}
 
 	private void startEditMode(Player player)
