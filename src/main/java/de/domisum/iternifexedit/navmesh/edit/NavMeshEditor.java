@@ -341,7 +341,12 @@ public class NavMeshEditor
 		Set<NavMeshTriangle> triangles = new HashSet<>(navMesh.getTriangles());
 
 		points.remove(point);
-		triangles.removeIf(t->t.getPointA().equals(point) || t.getPointB().equals(point) || t.getPointC().equals(point));
+		for(NavMeshTriangle t : triangles)
+			if(t.getPointA().equals(point) || t.getPointB().equals(point) || t.getPointC().equals(point))
+			{
+				triangles.remove(t);
+				deleteEdgesToTriangle(t, triangles);
+			}
 
 		NavMesh newNavMesh = new NavMesh(navMesh.getId(), navMesh.getCenter(), navMesh.getRadius(), points, triangles);
 		navMeshRegistry.register(newNavMesh);
@@ -489,7 +494,7 @@ public class NavMeshEditor
 			return;
 		}
 
-		removeTriangleFromNavMesh(triangle);
+		deleteTriangleFromNavMesh(triangle);
 
 		if(ladderTriangle == triangle)
 		{
@@ -498,7 +503,7 @@ public class NavMeshEditor
 		}
 	}
 
-	private void removeTriangleFromNavMesh(NavMeshTriangle triangle)
+	private void deleteTriangleFromNavMesh(NavMeshTriangle triangle)
 	{
 		NavMesh navMesh = getNavMesh();
 
@@ -506,6 +511,14 @@ public class NavMeshEditor
 		Set<NavMeshTriangle> triangles = new HashSet<>(navMesh.getTriangles());
 
 		triangles.remove(triangle);
+		deleteEdgesToTriangle(triangle, triangles);
+
+		NavMesh newNavMesh = new NavMesh(navMesh.getId(), navMesh.getCenter(), navMesh.getRadius(), points, triangles);
+		navMeshRegistry.register(newNavMesh);
+	}
+
+	private void deleteEdgesToTriangle(NavMeshTriangle triangle, Set<NavMeshTriangle> triangles)
+	{
 		for(NavMeshTriangle t : triangles)
 		{
 			NavMeshEdge edge = t.getEdgeTo(triangle);
@@ -514,9 +527,6 @@ public class NavMeshEditor
 
 			t.removeEdge(edge);
 		}
-
-		NavMesh newNavMesh = new NavMesh(navMesh.getId(), navMesh.getCenter(), navMesh.getRadius(), points, triangles);
-		navMeshRegistry.register(newNavMesh);
 	}
 
 
