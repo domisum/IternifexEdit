@@ -26,7 +26,7 @@ public class NavMeshEditCoordinator
 {
 
 	// CONSTANTS
-	private static final int TASK_INTERVAL_TICKS = 3;
+	private static final int TASK_INTERVAL_TICKS = 1;
 
 	// DEPENDENCIES
 	private final JavaPlugin plugin;
@@ -149,7 +149,7 @@ public class NavMeshEditCoordinator
 		if(tickTask != null)
 			return;
 
-		tickTask = Bukkit.getScheduler().runTaskTimer(plugin, this::update, 5, TASK_INTERVAL_TICKS);
+		tickTask = Bukkit.getScheduler().runTaskTimer(plugin, this::update, 0, TASK_INTERVAL_TICKS);
 	}
 
 	private void stopUpdateTask()
