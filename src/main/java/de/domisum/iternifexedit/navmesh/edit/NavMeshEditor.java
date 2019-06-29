@@ -242,7 +242,7 @@ public class NavMeshEditor
 			location = location.add(0, 0.3, 0);
 		}
 
-		player.spawnParticle(particle, location, 1);
+		spawnStillParticle(location, particle);
 	}
 
 	private void spawnLineParticles(LineSegment3D lineSegment, Particle particle, double distance)
@@ -254,12 +254,17 @@ public class NavMeshEditor
 			Vector3D vectorLocation = lineSegment.getA().add(offset);
 			Location location = convertVectorToLocation(vectorLocation, player.getWorld()).add(0, 0.5, 0);
 
-			player.spawnParticle(particle, location, 1);
+			spawnStillParticle(location, particle);
 		}
 
 		// make sure end is displayed properly even with big distance between points
 		Location location = convertVectorToLocation(lineSegment.getB(), player.getWorld()).add(0, 0.5, 0);
-		player.spawnParticle(particle, location, 1);
+		spawnStillParticle(location, particle);
+	}
+
+	private void spawnStillParticle(Location location, Particle particle)
+	{
+		player.spawnParticle(particle, location, 0);
 	}
 
 
