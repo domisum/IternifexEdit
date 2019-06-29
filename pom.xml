@@ -54,12 +54,6 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
-			<groupId>de.domisum</groupId>
-			<artifactId>MandatumLib</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-
 		<!-- EXTERNAL LIBRARIES -->
 		<dependency>  <!-- provides annotations to avoid boilerplate code -->
 			<groupId>org.projectlombok</groupId>
