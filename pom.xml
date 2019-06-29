@@ -33,14 +33,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- 3RD PARTY LIBRARIES -->
-		<dependency>
-			<groupId>com.darkblade12.particleeffect</groupId>
-			<artifactId>ParticleLib</artifactId>
-			<version>1.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- MY LIBRARIES -->
 		<dependency>
 			<groupId>de.domisum</groupId>

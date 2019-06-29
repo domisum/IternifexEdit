@@ -1,6 +1,5 @@
 package de.domisum.iternifexedit.navmesh.edit;
 
-import com.darkblade12.particleeffect.ParticleEffect;
 import de.domisum.lib.auxilium.data.container.direction.Direction2D;
 import de.domisum.lib.auxilium.data.container.math.LineSegment3D;
 import de.domisum.lib.auxilium.data.container.math.Vector3D;
@@ -17,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -222,30 +222,30 @@ public class NavMeshEditor
 			Set<LineSegment3D> triangleLines, Set<LineSegment3D> triangleConnectionLines, Set<LineSegment3D> ladderLines)
 	{
 		for(LineSegment3D line : triangleLines)
-			spawnLineParticles(line, ParticleEffect.FLAME, LINE_PARTICLE_DISTANCE);
+			spawnLineParticles(line, Particle.FLAME, LINE_PARTICLE_DISTANCE);
 
 		for(LineSegment3D line : triangleConnectionLines)
-			spawnLineParticles(line, ParticleEffect.DRAGON_BREATH, LINE_PARTICLE_DISTANCE*1.3);
+			spawnLineParticles(line, Particle.DRAGON_BREATH, LINE_PARTICLE_DISTANCE*1.3);
 
 		for(LineSegment3D line : ladderLines)
-			spawnLineParticles(line, ParticleEffect.FIREWORKS_SPARK, LINE_PARTICLE_DISTANCE);
+			spawnLineParticles(line, Particle.FIREWORKS_SPARK, LINE_PARTICLE_DISTANCE);
 	}
 
 	private void spawnPointParticles(NavMeshPoint point)
 	{
 		Location location = convertVectorToLocation(point, player.getWorld());
 
-		ParticleEffect particleEffect = ParticleEffect.DAMAGE_INDICATOR;
+		Particle particle = Particle.DAMAGE_INDICATOR;
 		if(selectedPoints.contains(point))
 		{
-			particleEffect = ParticleEffect.HEART;
+			particle = Particle.HEART;
 			location = location.add(0, 0.3, 0);
 		}
 
-		particleEffect.display(0, 0, 0, 0, 1, location, player);
+		player.spawnParticle(particle, location, 1);
 	}
 
-	private void spawnLineParticles(LineSegment3D lineSegment, ParticleEffect effect, double distance)
+	private void spawnLineParticles(LineSegment3D lineSegment, Particle particle, double distance)
 	{
 		Vector3D delta = lineSegment.getB().subtract(lineSegment.getA());
 		for(double d = 0; d < delta.length(); d += distance)
@@ -254,12 +254,12 @@ public class NavMeshEditor
 			Vector3D vectorLocation = lineSegment.getA().add(offset);
 			Location location = convertVectorToLocation(vectorLocation, player.getWorld()).add(0, 0.5, 0);
 
-			effect.display(0, 0, 0, 0, 1, location, player);
+			player.spawnParticle(particle, location, 1);
 		}
 
 		// make sure end is displayed properly even with big distance between points
 		Location location = convertVectorToLocation(lineSegment.getB(), player.getWorld()).add(0, 0.5, 0);
-		effect.display(0, 0, 0, 0, 1, location, player);
+		player.spawnParticle(particle, location, 1);
 	}
 
 
