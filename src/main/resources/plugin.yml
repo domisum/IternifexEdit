@@ -2,3 +2,8 @@ name: IternifexEdit
 version: ${project.version}
 author: domisum
 main: de.domisum.iternifexedit.IternifexEdit
+commands:
+  editNavMesh:
+    description: "Enable or disable editing NavMeshes"
+    usage: "/editNavMesh [snap|con]"
+    aliases: "editNavMeshes"

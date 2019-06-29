@@ -136,7 +136,7 @@ class NavMeshEditor
 		NavMesh mesh = getNavMesh();
 
 		if(mesh != null)
-			if((navMeshEditCoordinator.getUpdateCount()%3) == 0)
+			if((navMeshEditCoordinator.getTickCount()%3) == 0)
 				spawnParticles(mesh);
 
 		sendNearbyNavMeshName(mesh);

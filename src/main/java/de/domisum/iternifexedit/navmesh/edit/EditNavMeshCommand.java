@@ -1,35 +1,22 @@
 package de.domisum.iternifexedit.navmesh.edit;
 
-import de.domisum.iternifexedit.IternifexEdit;
-import de.domisum.lib.compitum.CompitumLib;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-
-class EditNavMeshCommand extends BukkitCommand
+@RequiredArgsConstructor
+class EditNavMeshCommand implements CommandExecutor
 {
 
-	// -------
-	// CONSTRUCTOR
-	// -------
-	EditNavMeshCommand()
-	{
-		super("editNavMesh");
-
-		description = "Used to edit the NavMeshes";
-		usageMessage = "/editNavMesh";
-
-		setAliases(new ArrayList<>());
-	}
+	// DEPENDENCIES
+	private final NavMeshEditCoordinator navMeshEditCoordinator;
 
 
-	// -------
 	// EXECUTION
-	// -------
 	@Override
-	public boolean execute(CommandSender sender, String alias, String[] args)
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
 		if(!(sender instanceof Player))
 		{
@@ -38,9 +25,7 @@ class EditNavMeshCommand extends BukkitCommand
 		}
 
 		Player player = (Player) sender;
-
-		NavMeshEditCoordinator editManager = IternifexEdit.getNavMeshEditCoordinator();
-		editManager.executeCommand(player, args);
+		navMeshEditCoordinator.executeCommand(player, args);
 
 		return true;
 	}

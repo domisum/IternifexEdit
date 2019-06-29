@@ -1,12 +1,14 @@
 package de.domisum.iternifexedit;
 
 import de.domisum.iternifexedit.navmesh.edit.NavMeshEditCoordinator;
+import de.domisum.lib.iternifex.navmesh.NavMeshRegistry;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class IternifexEdit extends JavaPlugin
 {
 
 	// EDITING
+	private NavMeshRegistry navMeshRegistry;
 	private NavMeshEditCoordinator navMeshEditCoordinator = null;
 
 
@@ -14,7 +16,9 @@ public class IternifexEdit extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-		navMeshEditCoordinator = new NavMeshEditCoordinator();
+		navMeshRegistry = new NavMeshRegistry();
+
+		navMeshEditCoordinator = new NavMeshEditCoordinator(this, navMeshRegistry);
 		navMeshEditCoordinator.initialize();
 
 		getLogger().info(getClass().getSimpleName()+" has been enabled");
@@ -23,19 +27,12 @@ public class IternifexEdit extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		saveAll();
+		navMeshRegistry.save();
 
 		if(navMeshEditCoordinator != null)
 			navMeshEditCoordinator.terminate();
 
 		getLogger().info(getClass().getSimpleName()+" has been disabled");
-	}
-
-
-	// LOADING/SAVING
-	private void saveAll()
-	{
-		// TODO
 	}
 
 }
