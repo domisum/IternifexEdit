@@ -22,6 +22,7 @@ public class IternifexEdit extends JavaPlugin
 	{
 		NavMeshStorage navMeshStorage = new NavMeshInDirectoryStorage(new File("/navMeshes/"));
 		navMeshRegistry = new NavMeshRegistry(navMeshStorage);
+		navMeshRegistry.initialize();
 
 		navMeshEditCoordinator = new NavMeshEditCoordinator(this, navMeshRegistry);
 		navMeshEditCoordinator.initialize();
