@@ -20,7 +20,7 @@ public class IternifexEdit extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-		NavMeshStorage navMeshStorage = new NavMeshInDirectoryStorage(new File("/navMeshes/"));
+		NavMeshStorage navMeshStorage = new NavMeshInDirectoryStorage(new File("navMeshes/"));
 		navMeshRegistry = new NavMeshRegistry(navMeshStorage);
 		navMeshRegistry.initialize();
 
