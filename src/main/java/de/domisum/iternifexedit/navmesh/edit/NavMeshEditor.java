@@ -431,7 +431,8 @@ public class NavMeshEditor
 		if(selectedPoints.size() == 2)
 		{
 			thirdPoint = createPoint();
-			selectedPoints.add(thirdPoint);
+			if(!selectedPoints.contains(thirdPoint))
+				selectedPoints.add(thirdPoint);
 		}
 		else
 			thirdPoint = selectedPoints.get(2);
