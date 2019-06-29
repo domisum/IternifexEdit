@@ -92,7 +92,10 @@ public class NavMeshEditCoordinator
 				.lore("Sneak while using to deselect all")
 				.build();
 
-		createTriangleItemStack = new ItemStackBuilder(Material.EMERALD).displayName(ChatColor.GREEN+"Create triangle").build();
+		createTriangleItemStack = new ItemStackBuilder(Material.EMERALD)
+				.displayName(ChatColor.GREEN+"Create triangle")
+				.lore("If 2 points selected, create 3rd point at current location")
+				.build();
 		deleteTriangleItemStack = new ItemStackBuilder(Material.BLAZE_POWDER)
 				.displayName(ChatColor.RED+"Delete triangle")
 				.build();
