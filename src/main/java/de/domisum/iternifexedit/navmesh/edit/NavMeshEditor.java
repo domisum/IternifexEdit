@@ -50,7 +50,7 @@ public class NavMeshEditor
 
 	// display
 	@Setter
-	private boolean showTriangleConnections = false;
+	private boolean showTriangleConnections = true;
 
 	// EDIT STATUS
 	private final List<NavMeshPoint> selectedPoints = new ArrayList<>();
@@ -223,13 +223,13 @@ public class NavMeshEditor
 			Set<LineSegment3D> triangleLines, Set<LineSegment3D> triangleConnectionLines, Set<LineSegment3D> ladderLines)
 	{
 		for(LineSegment3D line : triangleLines)
-			spawnLineParticles(line, Particle.FLAME, LINE_PARTICLE_DISTANCE);
+			spawnLineParticles(line, Particle.FLAME);
 
 		for(LineSegment3D line : triangleConnectionLines)
-			spawnLineParticles(line, Particle.DRAGON_BREATH, LINE_PARTICLE_DISTANCE*1.3);
+			spawnLineParticles(line, Particle.DRAGON_BREATH);
 
 		for(LineSegment3D line : ladderLines)
-			spawnLineParticles(line, Particle.FIREWORKS_SPARK, LINE_PARTICLE_DISTANCE);
+			spawnLineParticles(line, Particle.FIREWORKS_SPARK);
 	}
 
 	private void spawnPointParticles(NavMeshPoint point)
@@ -246,10 +246,10 @@ public class NavMeshEditor
 		spawnStillParticle(location, particle);
 	}
 
-	private void spawnLineParticles(LineSegment3D lineSegment, Particle particle, double distance)
+	private void spawnLineParticles(LineSegment3D lineSegment, Particle particle)
 	{
 		Vector3D delta = lineSegment.getB().subtract(lineSegment.getA());
-		for(double d = 0; d < delta.length(); d += distance)
+		for(double d = 0; d < delta.length(); d += LINE_PARTICLE_DISTANCE)
 		{
 			Vector3D offset = delta.normalize().multiply(d);
 			Vector3D vectorLocation = lineSegment.getA().add(offset);
