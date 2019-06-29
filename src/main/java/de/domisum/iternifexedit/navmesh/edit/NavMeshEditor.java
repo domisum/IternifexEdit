@@ -11,6 +11,7 @@ import de.domisum.lib.iternifex.navmesh.components.NavMeshEdge;
 import de.domisum.lib.iternifex.navmesh.components.NavMeshPoint;
 import de.domisum.lib.iternifex.navmesh.components.NavMeshTriangle;
 import de.domisum.lib.iternifex.navmesh.components.edges.NavMeshEdgeLadder;
+import de.domisum.lib.iternifex.navmesh.components.edges.NavMeshEdgeWalk;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -444,10 +445,36 @@ public class NavMeshEditor
 		Set<NavMeshPoint> points = new HashSet<>(navMesh.getPoints());
 		Set<NavMeshTriangle> triangles = new HashSet<>(navMesh.getTriangles());
 
+		for(NavMeshTriangle t : triangles)
+			if(doesShareTwoPoints(triangle, t))
+			{
+				NavMeshEdgeWalk edge = new NavMeshEdgeWalk(triangle, t);
+				triangle.addEdge(edge);
+				t.addEdge(edge);
+			}
 		triangles.add(triangle);
 
 		NavMesh newNavMesh = new NavMesh(navMesh.getId(), navMesh.getCenter(), navMesh.getRadius(), points, triangles);
 		navMeshRegistry.register(newNavMesh);
+	}
+
+	private boolean doesShareTwoPoints(NavMeshTriangle triangle1, NavMeshTriangle triangle2)
+	{
+		Set<NavMeshPoint> triangle1Points = new HashSet<>();
+		triangle1Points.add(triangle1.getPointA());
+		triangle1Points.add(triangle1.getPointB());
+		triangle1Points.add(triangle1.getPointC());
+
+		if(triangle1Points.contains(triangle2.getPointA()) && triangle1Points.contains(triangle2.getPointB()))
+			return true;
+
+		if(triangle1Points.contains(triangle2.getPointB()) && triangle1Points.contains(triangle2.getPointC()))
+			return true;
+
+		if(triangle1Points.contains(triangle2.getPointC()) && triangle1Points.contains(triangle2.getPointA()))
+			return true;
+
+		return false;
 	}
 
 
