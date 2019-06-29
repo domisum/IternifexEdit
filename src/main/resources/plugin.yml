@@ -2,6 +2,7 @@ name: IternifexEdit
 version: ${project.version}
 author: domisum
 main: de.domisum.iternifexedit.IternifexEdit
+api-version: 1.13
 commands:
   editNavMesh:
     description: "Enable or disable editing NavMeshes"
