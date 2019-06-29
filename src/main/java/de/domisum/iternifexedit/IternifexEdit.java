@@ -2,7 +2,11 @@ package de.domisum.iternifexedit;
 
 import de.domisum.iternifexedit.navmesh.edit.NavMeshEditCoordinator;
 import de.domisum.lib.iternifex.navmesh.NavMeshRegistry;
+import de.domisum.lib.iternifex.navmesh.storage.NavMeshInFolderStorage;
+import de.domisum.lib.iternifex.navmesh.storage.NavMeshStorage;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public class IternifexEdit extends JavaPlugin
 {
@@ -16,7 +20,8 @@ public class IternifexEdit extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-		navMeshRegistry = new NavMeshRegistry();
+		NavMeshStorage navMeshStorage = new NavMeshInFolderStorage(new File("/navMeshes/"));
+		navMeshRegistry = new NavMeshRegistry(navMeshStorage);
 
 		navMeshEditCoordinator = new NavMeshEditCoordinator(this, navMeshRegistry);
 		navMeshEditCoordinator.initialize();
