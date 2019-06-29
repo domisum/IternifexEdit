@@ -1,0 +1,4 @@
+name: IternifexEdit
+version: ${project.version}
+author: domisum
+main: de.domisum.iternifexedit.IternifexEdit
