@@ -123,7 +123,7 @@ public class NavMeshEditor
 				NavMeshEdgeLadder ladder = (NavMeshEdgeLadder) edge;
 				Vector3D ladderPosition;
 
-				if(ladder.getTriangleA() == triangle)
+				if(ladder.getTriangleA().equals(triangle))
 					ladderPosition = ladder.getBottomLadderLocation();
 				else
 					ladderPosition = ladder.getTopLadderLocation();
@@ -137,8 +137,6 @@ public class NavMeshEditor
 				}
 			}
 
-		if(minDistance > SELECTION_MAX_DISTANCE)
-			return null;
 
 		return closestLadder;
 	}
