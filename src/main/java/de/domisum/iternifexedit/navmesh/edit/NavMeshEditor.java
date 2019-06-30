@@ -541,13 +541,11 @@ public class NavMeshEditor
 		}
 
 		NavMeshTriangle triangle = getTriangle();
-		if(triangle == null)
-		{
-			player.sendMessage("Giving info failed. No triangle at current location.");
-			return;
-		}
+		NavMeshPoint nearestPoint = getNearestPoint();
 
-		player.sendMessage("Triangle '"+triangle.getId()+"' in mesh '"+mesh.getId()+"':");
+		String triangleId = (triangle == null) ? null : triangle.getId();
+		String pointId = (nearestPoint == null) ? null : nearestPoint.getId();
+		player.sendMessage("Triangle '"+triangleId+"'; closest point: '"+pointId+"':");
 	}
 
 
