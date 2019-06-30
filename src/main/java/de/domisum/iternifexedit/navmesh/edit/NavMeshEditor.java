@@ -341,7 +341,7 @@ public class NavMeshEditor
 		Set<NavMeshTriangle> triangles = new HashSet<>(navMesh.getTriangles());
 
 		points.remove(point);
-		for(NavMeshTriangle t : triangles)
+		for(NavMeshTriangle t : navMesh.getTriangles())
 			if(t.getPointA().equals(point) || t.getPointB().equals(point) || t.getPointC().equals(point))
 			{
 				triangles.remove(t);
