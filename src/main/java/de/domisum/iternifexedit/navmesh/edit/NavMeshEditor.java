@@ -545,7 +545,7 @@ public class NavMeshEditor
 
 		String triangleId = (triangle == null) ? null : triangle.getId();
 		String pointId = (nearestPoint == null) ? null : nearestPoint.getId();
-		player.sendMessage("Triangle '"+triangleId+"'; closest point: '"+pointId+"':");
+		player.sendMessage("Triangle '"+triangleId+"'; closest point: '"+pointId+"'");
 	}
 
 
