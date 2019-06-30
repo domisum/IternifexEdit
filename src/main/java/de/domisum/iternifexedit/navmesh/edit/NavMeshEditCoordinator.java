@@ -102,7 +102,7 @@ public class NavMeshEditCoordinator
 		infoItemStack = new ItemStackBuilder(Material.BOOK).displayName(ChatColor.AQUA+"Point/triangle info").build();
 		ladderItemStack = new ItemStackBuilder(Material.STICK)
 				.displayName(ChatColor.GOLD+"Create ladder")
-				.lore("Sneak while using to cancel ladder creation/ delete ladder")
+				.lore("Sneak while using to cancel ladder creation/delete ladder")
 				.build();
 
 		editItemStacks.add(createPointItemStack);
