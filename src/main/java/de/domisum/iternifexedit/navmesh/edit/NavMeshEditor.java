@@ -636,9 +636,8 @@ public class NavMeshEditor
 			return;
 		}
 
-		for(NavMeshTriangle t : getNavMesh().getTriangles())
-			if(t.getEdges().contains(ladder))
-				t.removeEdge(ladder);
+		ladder.getTriangleA().removeEdge(ladder);
+		ladder.getTriangleB().removeEdge(ladder);
 	}
 
 
