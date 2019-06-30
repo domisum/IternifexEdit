@@ -191,7 +191,7 @@ public class NavMeshEditCoordinator
 
 
 	// EDITING MODE
-	void executeCommand(Player player, String[] args)
+	public void executeCommand(Player player, String[] args)
 	{
 		if(args.length == 0)
 		{
